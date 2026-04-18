@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MyDNS</string>
+    <string name="register_title">Регистрация</string>
+    <string name="login_title">Авторизация</string>
+    <string name="hint_name">Введите имя</string>
+    <string name="hint_email">Введите email</string>
+    <string name="hint_password">Введите пароль</string>
+    <string name="btn_register">Зарегистрироваться</string>
+    <string name="btn_login">Авторизоваться</string>
+
+    <string name="nav_title">Главная</string>
+    <string name="nav_shop">Товары</string>
+    <string name="nav_profile">Профиль</string>
+    <string name="nav_cart">Корзина</string>
+
+    <string name="welcome">Здарова ,вы попали в магазин техники</string>
+    <string name="btn_save">Сохранить &amp;</string>
+</resources>
