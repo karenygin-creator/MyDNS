@@ -14,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,63 +69,66 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
-<LinearLayout
-    android:id="@+id/frameProfile"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:orientation="vertical"
-    android:padding="20dp"
 
-    app:layout_constraintBottom_toBottomOf="@id/bottomNav"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-    <TextView
-        android:id="@+id/tvProfileTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Профиль"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"/>
-    <TextView
-        android:id="@+id/tvProfileName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Имя:"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="10dp"/>
-    <EditText
-        android:id="@+id/etProfileName"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/ic_launcher_background"
-        android:hint="Введите имя"
-        android:layout_marginBottom="10dp"/>
-    <Button
-        android:id="@+id/btnSaveProfile"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="Сохранить"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        />
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:text="Выйти"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        />
+    <LinearLayout
+        android:id="@+id/frameProfile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/bottomNav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvProfileTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Профиль"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvProfileName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Имя:"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/etProfileName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_launcher_background"
+            android:hint="Введите имя" />
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Сохранить"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:text="Выйти"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
 
-
-
-</LinearLayout>
+    </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"

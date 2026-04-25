@@ -1,5 +1,6 @@
 package com.example.mydns;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             userName=newName;
             binding.tvProfileName.setText("Имя: " + userName);
             Toast.makeText(this,"Имя сохранено",Toast.LENGTH_SHORT).show();
+
+        });
+        binding.btnLogout.setOnClickListener(v->{
+            Intent
         });
     }
 }

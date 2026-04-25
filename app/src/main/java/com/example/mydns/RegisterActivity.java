@@ -32,11 +32,11 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
             if(email.isEmpty()){
-                binding.etName.setError("Введите email");
+                binding.etEmail.setError("Введите email");
                 return;
             }
             if(password.isEmpty()){
-                binding.etName.setError("Введите password");
+                binding.etPassword.setError("Введите password");
                 return;
             }
             SharedPreferences.Editor editor=preferences.edit();
