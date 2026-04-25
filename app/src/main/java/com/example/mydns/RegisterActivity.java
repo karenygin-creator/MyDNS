@@ -1,7 +1,9 @@
 package com.example.mydns;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,19 @@ public class RegisterActivity extends AppCompatActivity {
                 binding.etName.setError("Введите password");
                 return;
             }
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("name",name);
+            editor.putString("email",email);
+            editor.putString("password",password);
+            editor.apply();
+            Toast.makeText(this,"Регистрация успешно",
+                    Toast.LENGTH_SHORT).show();
+
+            Intent intent=new Intent(RegisterActivity.this,
+                    LoginActivity.class);
+            startActivity(intent);
+            finish();
+
         });
     }
 }
