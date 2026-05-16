@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_car"/>
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Название товара"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="20sp"/>
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="59 999 ₽"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginTop="18sp"/>
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Описание товара"
+            android:textColor="@color/dns_orange"
+            android:textSize="18sp"
+            android:layout_marginTop="18sp"/>
+        <Button
+            android:id="@+id/btnAddCart"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Добавить в корзину"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Назад"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"/>
+
+    </LinearLayout>
+</ScrollView>

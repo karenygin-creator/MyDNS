@@ -1,5 +1,6 @@
 package com.example.mydns;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvDescription.setText(product.getDescription());
         holder.imgProduct.setImageResource(product.getImage());
         holder.itemView.setOnClickListener(v->{
-            Toast.makeText(v.getContext(),"Вы выбрали: "+ product.getName(),Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(v.getContext(),ProductActivity.class);
+            intent.putExtra("product_name",product.getName());
+            intent.putExtra("product_price",product.getPrice());
+            intent.putExtra("product_description",product.getDescription());
+            intent.putExtra("product_image",product.getImage());
+
+            v.getContext().startActivity(intent);
         });
     }
     @Override
