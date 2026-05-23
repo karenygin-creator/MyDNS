@@ -29,6 +29,13 @@ public class ProductActivity extends AppCompatActivity {
         binding.imgProduct.setImageResource(image);
 
         binding.btnAddCart.setOnClickListener(v->{
+            Product product=new Product(
+                    name,
+                    price,
+                    description,
+                    image
+            );
+            CartManager.cartProducts.add(product);
             Toast.makeText(this,"Товар добавлен в корзину",
                     Toast.LENGTH_SHORT).show();
         });

@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mydns.databinding.ActivityMainBinding;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private List<Product>products;
     private ProductAdapter adapter;
+    private CartAdapter cartAdapter;
     private String userName="Пользователь";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setupProducts();
         setupButtonMenu();
         showHome();
+        setupCart();
         binding.btnSaveProfile.setOnClickListener(v->{
             String newName=binding.etProfileName.getText().toString().trim();
             if(newName.isEmpty()){
@@ -81,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 showShop();
                 return true;
             }
+            if(id==R.id.nav_cart){
+                showCart();
+                return true;
+            }
             return false;
         });
     }
@@ -88,18 +95,32 @@ public class MainActivity extends AppCompatActivity {
         binding.frameHome.setVisibility(View.VISIBLE);
         binding.frameProfile.setVisibility(View.GONE);
         binding.frameShop.setVisibility(View.GONE);
+        binding.frameCart.setVisibility(View.GONE);
 
     }
     private void showProfile(){
         binding.frameHome.setVisibility(View.GONE);
         binding.frameProfile.setVisibility(View.VISIBLE);
         binding.frameShop.setVisibility(View.GONE);
+        binding.frameCart.setVisibility(View.GONE);
 
     }
     private void showShop(){
         binding.frameHome.setVisibility(View.GONE);
         binding.frameProfile.setVisibility(View.GONE);
         binding.frameShop.setVisibility(View.VISIBLE);
+        binding.frameCart.setVisibility(View.GONE);
 
+    }
+    private void showCart(){
+        binding.frameHome.setVisibility(View.GONE);
+        binding.frameProfile.setVisibility(View.GONE);
+        binding.frameShop.setVisibility(View.GONE);
+        binding.frameCart.setVisibility(View.VISIBLE);
+    }
+    private void setupCart(){
+        cartAdapter =new CartAdapter(CartManager.cartProducts);
+        binding.cartRecuclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.cartRecuclerView.setAdapter(cartAdapter);
     }
 }
