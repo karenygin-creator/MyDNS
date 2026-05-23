@@ -35,7 +35,7 @@ public class ProductActivity extends AppCompatActivity {
                     description,
                     image
             );
-            CartManager.cartProducts.add(product);
+            CartManager.addProduct(product);
             Toast.makeText(this,"Товар добавлен в корзину",
                     Toast.LENGTH_SHORT).show();
         });

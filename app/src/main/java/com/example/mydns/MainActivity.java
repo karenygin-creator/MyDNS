@@ -2,6 +2,7 @@ package com.example.mydns;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
         binding.tvProfileName.setText("Имя: " + userName);
         binding.etProfileName.setText(userName);
         setupProducts();
+        setupCart();
         setupButtonMenu();
         showHome();
-        setupCart();
+
         binding.btnSaveProfile.setOnClickListener(v->{
             String newName=binding.etProfileName.getText().toString().trim();
             if(newName.isEmpty()){
@@ -57,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//        if (cartAdapter!=null){
+//            cartAdapter.notifyDataSetChanged();
+//        }
+//    }
     private void setupProducts(){
         products=new ArrayList<>();
         products.add(new Product("Ноутбук Asus","59 999 ₽","good",R.drawable.ic_car));
@@ -117,10 +126,23 @@ public class MainActivity extends AppCompatActivity {
         binding.frameProfile.setVisibility(View.GONE);
         binding.frameShop.setVisibility(View.GONE);
         binding.frameCart.setVisibility(View.VISIBLE);
+        setupCart();
+
     }
+
     private void setupCart(){
-        cartAdapter =new CartAdapter(CartManager.cartProducts);
-        binding.cartRecuclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.cartRecuclerView.setAdapter(cartAdapter);
+        cartAdapter =new CartAdapter(CartManager.cartProducts,this::updateTotalPrice);
+        binding.cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.cartRecyclerView.setAdapter(cartAdapter);
+        updateTotalPrice();
+
+    }
+    private void updateTotalPrice(){
+        int total=0;
+        for(CartItem item:CartManager.cartProducts){
+            total+=item.getTotalPrice();
+        }
+        binding.tvTotalPrice.setText("Итого: "+total+" ₽");
+        Log.d("DEBAG","summa"+total);
     }
 }

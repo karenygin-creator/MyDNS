@@ -12,9 +12,13 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder>{
-    private List<Product> products;
-    public CartAdapter(List<Product> products){
-        this.products=products;
+    private List<CartItem> cartItems;
+    private Runnable onCartChanged;
+
+    public CartAdapter(List<CartItem> cartItems,Runnable onCartChanged){
+
+        this.cartItems=cartItems;
+        this.onCartChanged=onCartChanged;
     }
     @NonNull
     @Override
@@ -26,14 +30,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder,int position){
-        Product product=products.get(position);
+       CartItem item =cartItems.get(position);
+       Product product=item.getProduct();
         holder.binding.tvCartName.setText(product.getName());
         holder.binding.tvCartPrice.setText(product.getPrice());
         holder.binding.imgCartProduct.setImageResource(product.getImage());
+        holder.binding.tvCount.setText(String.valueOf(item.getCount()));
+        holder.binding.btnPlus.setOnClickListener(v->{
+            item.plus();
+            notifyItemChanged(holder.getAdapterPosition());
+            onCartChanged.run();
+        });
+        holder.binding.btnMinus.setOnClickListener(v->{
+            item.minus();
+            notifyItemChanged(holder.getAdapterPosition());
+            onCartChanged.run();
+        });
+        holder.binding.btnDelete.setOnClickListener(v->{
+            int adapterPosition=holder.getAdapterPosition();
+            if(adapterPosition!=RecyclerView.NO_POSITION){
+                CartManager.removeItem(cartItems.get(adapterPosition));
+                notifyItemRemoved(adapterPosition);
+                onCartChanged.run();
+            }
+
+        });
     }
     @Override
     public int getItemCount(){
-        return products.size();
+        return cartItems.size();
     }
     static class CartViewHolder extends RecyclerView.ViewHolder{
         ItemCartBinding binding;
