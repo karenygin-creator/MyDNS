@@ -15,4 +15,9 @@
 
     <string name="welcome">Здарова ,вы попали в магазин техники</string>
     <string name="btn_save">Сохранить &amp;</string>
+    <string name="order_title">Оформление заказа</string>
+    <string name="hint_number">Введите номер телефона</string>
+    <string name="hint_address">Введите адрес</string>
+    <string name="btn_order">Оформить заказ</string>
+    <string name="btn_back">Назад</string>
 </resources>

@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Имя сохранено",Toast.LENGTH_SHORT).show();
 
         });
+        binding.btnOrder.setOnClickListener(v-> {
+            Intent intent = new Intent(MainActivity.this,
+                    OrderActivity.class);
+            startActivity(intent);
+        });
         binding.btnLogout.setOnClickListener(v->{
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
