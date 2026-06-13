@@ -1,6 +1,7 @@
 package com.example.mydns;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
     private ProductAdapter adapter;
     private CartAdapter cartAdapter;
     private String userName="Пользователь";
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferences =getSharedPreferences("auth_data",MODE_PRIVATE);
         String nameFromIntent=getIntent().getStringExtra("user_name");
         if(nameFromIntent!=null && !nameFromIntent.isEmpty()){
             userName=nameFromIntent;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         binding.btnLogout.setOnClickListener(v->{
+            preferences.edit().clear().apply();
             Intent intent=new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();

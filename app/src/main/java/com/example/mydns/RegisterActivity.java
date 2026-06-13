@@ -3,6 +3,7 @@ package com.example.mydns;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -97,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
                         runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
-                                "Ошибка подключения",
+                                "Ошибка подключения"+e.getMessage(),
                                 Toast.LENGTH_SHORT).show());
                 }
 
@@ -121,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
                             runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
                                     "Ошибка регистрации "+ response.code()+"\n"+responseBody,
                                     Toast.LENGTH_SHORT).show());
-                            Log
+                            Log.d("SUPABASE",responseBody);
                         }
                 }
             });
@@ -136,6 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
             JSONObject json=new JSONObject();
             json.put("id",userId);
             json.put("name",name);
+            Log.d("PROFILE_DEBUG", "userID: "+userId);
+            Log.d("PROFILE_DEBUG", "name: "+name);
+            Log.d("PROFILE_DEBUG", "accessToken: "+accessToken);
+            Log.d("PROFILE_DEBUG", "json: "+json.toString());
 
             RequestBody body=RequestBody.create(
                     json.toString(),
@@ -143,9 +148,9 @@ public class RegisterActivity extends AppCompatActivity {
             );
 
             Request request=new Request.Builder()
-                    .url(SupabaseClient.URL+"/rest/v1/profile")
+                    .url(SupabaseClient.URL+"/rest/v1/profiles")
                     .addHeader("apikey",SupabaseClient.API_KEY)
-                    .addHeader("Authorization","Bearer"+accessToken)
+                    .addHeader("Authorization","Bearer "+accessToken)
                     .addHeader("Content-Type","application/json")
                     .addHeader("Prefer","return=minimal")
                     .post(body)
@@ -175,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                         runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
                                 "Ошибка профиля "+error,
                                 Toast.LENGTH_SHORT).show());
+                        Log.d("TEST", error);
                     }
                 }
             });
@@ -182,6 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
             runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
                     "Ошибка профиля ",
                     Toast.LENGTH_SHORT).show());
+            Log.d("TEST1", e.getMessage());
         }
     }
 }
