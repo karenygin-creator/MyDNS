@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.mydns.databinding.ActivityProductBinding;
 
 public class ProductActivity extends AppCompatActivity {
@@ -18,22 +19,30 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityProductBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        String name= getIntent().getStringExtra("product_name");
-        String price= getIntent().getStringExtra("product_price");
-        String description= getIntent().getStringExtra("product_description");
-        int image=getIntent().getIntExtra("product_image",
-                R.drawable.ic_car);
+        long id=getIntent().getLongExtra("product_id",0);
+        String name=getIntent().getStringExtra("product_name");
+        int price=getIntent().getIntExtra("product_price",0);
+        String description=getIntent().getStringExtra("product_description");
+        int quantity=getIntent().getIntExtra("quantity",0);
+        String imageUrl=getIntent().getStringExtra("product_image_url");
         binding.tvProductName.setText(name);
-        binding.tvProductPrice.setText(price);
+        binding.tvProductPrice.setText(price + " ₽");
         binding.tvProductDescription.setText(description);
-        binding.imgProduct.setImageResource(image);
+        Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_car)
+                .error(R.drawable.ic_car)
+                .into(binding.imgProduct);
+
 
         binding.btnAddCart.setOnClickListener(v->{
             Product product=new Product(
+                    id,
                     name,
                     price,
+                    quantity,
                     description,
-                    image
+                    imageUrl
             );
             CartManager.addProduct(product);
             Toast.makeText(this,"Товар добавлен в корзину",

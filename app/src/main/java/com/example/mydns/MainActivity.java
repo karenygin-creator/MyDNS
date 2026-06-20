@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,8 +18,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.mydns.databinding.ActivityMainBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -27,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private CartAdapter cartAdapter;
     private String userName="Пользователь";
     private SharedPreferences preferences;
+    private OkHttpClient client=new OkHttpClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,15 +92,10 @@ public class MainActivity extends AppCompatActivity {
 //    }
     private void setupProducts(){
         products=new ArrayList<>();
-        products.add(new Product("Ноутбук Asus","59 999 ₽","good",R.drawable.ic_car));
-        products.add(new Product("Смартфон Samsung","59 999 ₽","good",R.drawable.ic_car));
-        products.add(new Product("Телевизор LG","59 999 ₽","good",R.drawable.ic_car));
-        products.add(new Product("Наушники","59 999 ₽","good",R.drawable.ic_car));
-        products.add(new Product("Планшет","59 999 ₽","good",R.drawable.ic_car));
-        products.add(new Product("Монитор","59 999 ₽","good",R.drawable.ic_car));
         adapter=new ProductAdapter(products);
         binding.recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         binding.recyclerView.setAdapter(adapter);
+        loadProductsFromSupabase();
     }
     private void setupButtonMenu(){
         binding.bottomNav.setOnItemSelectedListener(item->{
@@ -153,5 +163,63 @@ public class MainActivity extends AppCompatActivity {
         }
         binding.tvTotalPrice.setText("Итого: "+total+" ₽");
         Log.d("DEBAG","summa"+total);
+    }
+    private void loadProductsFromSupabase(){
+        Request request=new Request.Builder()
+                .url(SupabaseClient.URL+"/rest/v1/products?select=*")
+                .addHeader("apikey",SupabaseClient.API_KEY)
+                .addHeader("Authorization","Bearer "+SupabaseClient.API_KEY)
+                .addHeader("Content-Type","application/json")
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                        "Ошибка загрузки товаров"+e.getMessage(),
+                        Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody=response.body().string();
+                if(response.isSuccessful()){
+                    try {
+                        JSONArray array=new JSONArray(responseBody);
+                        products.clear();
+                        for(int i=0;i<array.length();i++){
+                            JSONObject object=array.getJSONObject(i);
+                            long id=object.getLong("id");
+                            String name=object.getString("name");
+                            int price=object.getInt("price");
+                            String description=object.optString("description","");
+                            int quantity=object.optInt("quantity",0);
+                            String imageUrl=object.optString("image_url","");
+                            Product product=new Product(
+                                    id,
+                                    name,
+                                    price,
+                                    quantity,
+                                    description,
+                                    imageUrl
+                            );
+                            products.add(product);
+                        }
+                        runOnUiThread(()->adapter.notifyDataSetChanged());
+                    } catch (JSONException e) {
+                        runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                                "Ошибка обработки товаров",
+                                Toast.LENGTH_SHORT).show());
+                    }
+                }
+                else {
+                    runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                            "Ошибка Supabase "+ response.code()+"\n"+responseBody,
+                            Toast.LENGTH_SHORT).show());
+                    Log.d("SUPABASE",responseBody);
+                }
+            }
+        });
+
     }
 }

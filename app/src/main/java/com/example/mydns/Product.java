@@ -1,31 +1,43 @@
 package com.example.mydns;
 
 public class Product {
+    private long id;
     private String name;
-    private String price;
+    private int price;
     private String description;
-    private int image;
+    private int quantity;
+    private String imageUrl;
 
-    public Product(String name, String price,String description, int image) {
+    public Product(long id, String name, int price, int quantity, String description, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.price = price;
-        this.description=description;
-        this.image = image;
+        this.quantity = quantity;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
-    }
-
-    public int getImage() {
-        return image;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

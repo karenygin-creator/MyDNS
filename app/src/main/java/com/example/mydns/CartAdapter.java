@@ -3,11 +3,13 @@ package com.example.mydns;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.mydns.databinding.ItemCartBinding;
 
-import org.jspecify.annotations.NonNull;
+
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
     @NonNull
     @Override
-    public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent,int viewType){
+    public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         ItemCartBinding binding=ItemCartBinding.inflate(
                 LayoutInflater.from(parent.getContext()),parent,false);
 
@@ -33,8 +35,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
        CartItem item =cartItems.get(position);
        Product product=item.getProduct();
         holder.binding.tvCartName.setText(product.getName());
-        holder.binding.tvCartPrice.setText(product.getPrice());
-        holder.binding.imgCartProduct.setImageResource(product.getImage());
+        holder.binding.tvCartPrice.setText(product.getPrice()+" ₽");
+//        holder.binding.imgCartProduct.setImageResource(R.drawable.ic_car);
+        Glide.with(holder.itemView.getContext())
+                .load(product.getImageUrl())
+                .placeholder(R.drawable.ic_car)
+                .error(R.drawable.ic_car)
+                .into(holder.binding.imgCartProduct);
         holder.binding.tvCount.setText(String.valueOf(item.getCount()));
         holder.binding.btnPlus.setOnClickListener(v->{
             item.plus();

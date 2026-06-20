@@ -3,12 +3,13 @@ package com.example.mydns;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.mydns.databinding.ItemOrderProductBinding;
 
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
     }
     @NonNull
     @Override
-    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent,int viewType){
+    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         ItemOrderProductBinding binding=ItemOrderProductBinding.inflate(
                 LayoutInflater.from(parent.getContext()),parent,false);
 
@@ -33,8 +34,13 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
         CartItem item =items.get(position);
         Product product=item.getProduct();
         holder.binding.tvOrderName.setText(product.getName());
-        holder.binding.tvOrderPrice.setText(product.getPrice());
-        holder.binding.imgOrderProduct.setImageResource(product.getImage());
+        holder.binding.tvOrderPrice.setText(product.getPrice()+" ₽");
+//        holder.binding.imgOrderProduct.setImageResource(R.drawable.ic_car);
+        Glide.with(holder.itemView.getContext())
+                .load(product.getImageUrl())
+                .placeholder(R.drawable.ic_car)
+                .error(R.drawable.ic_car)
+                .into(holder.binding.imgOrderProduct);
         holder.binding.tvOrderCount.setText("Количество: "+ item.getCount());
 
     }

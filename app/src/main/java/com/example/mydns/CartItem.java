@@ -27,7 +27,6 @@ public class CartItem {
         }
     }
     public int getTotalPrice() {
-        String price = product.getPrice().replaceAll("[^0-9]", "");
-        return Integer.parseInt(price)*count;
+        return product.getPrice()*count;
     }
 }

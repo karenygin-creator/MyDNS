@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
@@ -30,15 +32,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product=products.get(position);
         holder.tvName.setText(product.getName());
-        holder.tvPrice.setText(product.getPrice());
+        holder.tvPrice.setText(product.getPrice()+" ₽");
         holder.tvDescription.setText(product.getDescription());
-        holder.imgProduct.setImageResource(product.getImage());
+//        holder.imgProduct.setImageResource(R.drawable.ic_car);
+        Glide.with(holder.itemView.getContext())
+                .load(product.getImageUrl())
+                .placeholder(R.drawable.ic_car)
+                .error(R.drawable.ic_car)
+                .into(holder.imgProduct);
         holder.itemView.setOnClickListener(v->{
             Intent intent=new Intent(v.getContext(),ProductActivity.class);
             intent.putExtra("product_name",product.getName());
             intent.putExtra("product_price",product.getPrice());
+            intent.putExtra("product_quantity",product.getQuantity());
             intent.putExtra("product_description",product.getDescription());
-            intent.putExtra("product_image",product.getImage());
+            intent.putExtra("product_image_url",product.getImageUrl());
 
             v.getContext().startActivity(intent);
         });
