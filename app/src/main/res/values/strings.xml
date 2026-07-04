@@ -13,11 +13,13 @@
     <string name="nav_profile">Профиль</string>
     <string name="nav_cart">Корзина</string>
 
-    <string name="welcome">Здарова ,вы попали в магазин техники</string>
+    <string name="welcome">Добро пожаловать</string>
     <string name="btn_save">Сохранить &amp;</string>
     <string name="order_title">Оформление заказа</string>
     <string name="hint_number">Введите номер телефона</string>
     <string name="hint_address">Введите адрес</string>
     <string name="btn_order">Оформить заказ</string>
     <string name="btn_back">Назад</string>
+    <string name="icon">🖥</string>
+
 </resources>
