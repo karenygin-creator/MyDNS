@@ -97,33 +97,33 @@ public class RegisterActivity extends AppCompatActivity {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                        runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
-                                "Ошибка подключения"+e.getMessage(),
-                                Toast.LENGTH_SHORT).show());
+                    runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
+                            "Ошибка подключения"+e.getMessage(),
+                            Toast.LENGTH_SHORT).show());
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        String responseBody=response.body().string();
-                        if(response.isSuccessful()){
-                            try {
-                                JSONObject object=new JSONObject(responseBody);
-                                String accessToken=object.getString("access_token");
-                                String userId=object.getJSONObject("user")
-                                        .getString("id");
-                                createProfile(userId,registerName,accessToken);
-                            } catch (JSONException e) {
-                                runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
-                                        "Ошибка обработки ответа",
-                                        Toast.LENGTH_SHORT).show());
-                            }
-                        }
-                        else {
+                    String responseBody=response.body().string();
+                    if(response.isSuccessful()){
+                        try {
+                            JSONObject object=new JSONObject(responseBody);
+                            String accessToken=object.getString("access_token");
+                            String userId=object.getJSONObject("user")
+                                    .getString("id");
+                            createProfile(userId,registerName,accessToken);
+                        } catch (JSONException e) {
                             runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
-                                    "Ошибка регистрации "+ response.code()+"\n"+responseBody,
+                                    "Ошибка обработки ответа",
                                     Toast.LENGTH_SHORT).show());
-                            Log.d("SUPABASE",responseBody);
                         }
+                    }
+                    else {
+                        runOnUiThread(()-> Toast.makeText(RegisterActivity.this,
+                                "Ошибка регистрации "+ response.code()+"\n"+responseBody,
+                                Toast.LENGTH_SHORT).show());
+                        Log.d("SUPABASE",responseBody);
+                    }
                 }
             });
         } catch (JSONException e) {

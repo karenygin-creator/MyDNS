@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private ProductAdapter adapter;
     private CartAdapter cartAdapter;
     private String userName="Пользователь";
+    private String accessToken;
+    private String userId;
     private SharedPreferences preferences;
     private OkHttpClient client=new OkHttpClient();
     @Override
@@ -48,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferences =getSharedPreferences("auth_data",MODE_PRIVATE);
-        String nameFromIntent=getIntent().getStringExtra("user_name");
-        if(nameFromIntent!=null && !nameFromIntent.isEmpty()){
-            userName=nameFromIntent;
-        }
-        binding.tvProfileName.setText("Имя: " + userName);
-        binding.etProfileName.setText(userName);
+        accessToken=preferences.getString("access_token",null);
+        userId=preferences.getString("user_id",null);
+//        String nameFromIntent=getIntent().getStringExtra("user_name");
+//        if(nameFromIntent!=null && !nameFromIntent.isEmpty()){
+//            userName=nameFromIntent;
+//        }
+        binding.tvProfileName.setText("Имя: загрузка...");
+        binding.etProfileName.setText("");
+        loadUserProfile();
         setupProducts();
         setupCart();
         setupButtonMenu();
@@ -218,6 +223,62 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show());
                     Log.d("SUPABASE",responseBody);
                 }
+            }
+        });
+
+    }
+    private void loadUserProfile(){
+        if(accessToken==null||userId==null){
+            binding.tvProfileName.setText("Имя: загрузка...");
+            return;
+        }
+        Request request=new Request.Builder()
+                .url(SupabaseClient.URL+"/rest/v1/profiles"+"?id=eq."+userId+"&select=name")
+                .addHeader("apikey",SupabaseClient.API_KEY)
+                .addHeader("Authorization","Bearer "+accessToken)
+                .addHeader("Content-Type","application/json")
+                .get()
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                        "Ошибка загрузки профиля"+e.getMessage(),
+                        Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String responseBody=response.body()!=null?response.body().string():"";
+                if(!response.isSuccessful()){
+                    runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                            "Ошибка Загрузки профиля "+ response.code()+"\n"+responseBody,
+                            Toast.LENGTH_SHORT).show());
+                    Log.d("SUPABASE",responseBody);
+                    return;
+                }
+                try {
+                    JSONArray array=new JSONArray(responseBody);
+                    if(array.length()==0){
+                        runOnUiThread(()->
+                                binding.tvProfileName.setText("Имя пользователя"));
+                        return;
+                    }
+
+                    JSONObject profile=array.getJSONObject(0);
+                    String loadedName=profile.optString("name","Пользователь");
+                    userName=loadedName;
+                    runOnUiThread(()->{
+                            binding.tvProfileName.setText("Имя: "+userName);
+                            binding.etProfileName.setText(userName);
+                    });
+
+                } catch (JSONException e) {
+                    runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                            "Ошибка обработки профиля",
+                            Toast.LENGTH_SHORT).show());
+                }
+
             }
         });
 

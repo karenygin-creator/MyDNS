@@ -14,7 +14,8 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_marginBottom="25dp"/>
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="200dp"/>
 
     <EditText
         android:id="@+id/etName"
@@ -22,7 +23,9 @@
         android:layout_height="50dp"
         android:hint="@string/hint_name"
         android:paddingHorizontal="16dp"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/bg_input"
+        />
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
@@ -30,7 +33,8 @@
         android:hint="@string/hint_email"
         android:paddingHorizontal="16dp"
         android:layout_marginBottom="15dp"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:background="@drawable/bg_input"/>
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -38,15 +42,26 @@
         android:hint="@string/hint_password"
         android:paddingHorizontal="16dp"
         android:layout_marginBottom="15dp"
-        android:inputType="textPassword"/>
-    <Button
+        android:inputType="textPassword"
+        android:background="@drawable/bg_input"/>
+    <TextView
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="@string/btn_register"
-        android:textColor="@color/white"
+        android:text="Зарегестрироваться"
+        android:textColor="@color/accent_green"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:gravity="center" />
+    <TextView
+        android:id="@+id/tvGoLogin"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Назад"
+        android:textColor="@color/accent_green"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center" />
 
 
 </LinearLayout>
