@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,6 +34,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.BufferedSink;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -281,6 +283,75 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+    private void updateUserProfile(String newName){
+        if(accessToken==null||userId==null){
+            Toast.makeText(this,"Нет данных авторизации",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            JSONObject json = new JSONObject();
+            json.put("name", newName);
+            RequestBody requestBody = RequestBody.create(
+                    json.toString(), MediaType.parse("application/json")
+            );
+            Request request = new Request.Builder()
+                    .url(SupabaseClient.URL + "/rest/v1/profiles" + "?id=eq." + userId + "&select=name")
+                    .addHeader("apikey", SupabaseClient.API_KEY)
+                    .addHeader("Authorization", "Bearer " + accessToken)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=minimal")
+                    .patch(requestBody)
+                    .build();
+            binding.btnSaveProfile.setEnabled(false);
+
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    runOnUiThread(() -> {
+                        binding.btnSaveProfile.setEnabled(true);
+
+                        Toast.makeText(MainActivity.this,
+                                "Не удалось сохранить имя" + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    });
+
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    String responseBody = response.body() != null ? response.body().string() : "";
+                    runOnUiThread(() -> binding.btnSaveProfile.setEnabled(true));
+                    if (response.isSuccessful()) {
+                        userName = newName;
+                        runOnUiThread(() -> {
+                            binding.tvProfileName.setText("Имя: " + userName);
+                            binding.etProfileName.setText(userName);
+                            Toast.makeText(
+                                    MainActivity.this, "Имя сохранено", Toast.LENGTH_SHORT
+                            ).show();
+                        });
+                    } else {
+                        runOnUiThread(() ->
+
+                                Toast.makeText(
+                                        MainActivity.this, "Ошибка сохранения" + response.code(), Toast.LENGTH_SHORT
+                                ).show()
+                        );
+                    }
+                }
+            });
+        }
+
+        catch (JSONException e) {
+                    runOnUiThread(()-> Toast.makeText(MainActivity.this,
+                            "Ошибка обработки профиля",
+                            Toast.LENGTH_SHORT).show());
+                }
+
+
 
     }
 }
